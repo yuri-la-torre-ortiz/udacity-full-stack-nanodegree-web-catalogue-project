@@ -6,7 +6,7 @@ from sqlalchemy.orm import sessionmaker
 
 from database_setup import Base, User, Genre, Film
 
-engine = create_engine('sqlite:///restaurantmenuwithusers.db')
+engine = create_engine('sqlite:///films.db')
 # Bind the engine to the metadata of the Base class so that the
 # declaratives can be accessed through a DBSession instance
 Base.metadata.bind = engine
