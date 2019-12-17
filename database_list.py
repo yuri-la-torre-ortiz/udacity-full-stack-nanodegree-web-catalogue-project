@@ -92,7 +92,7 @@ film7 = Film(user_id = 1, title = "Teeth", year = 2007, description = "Still a s
 session.add(film7)
 session.commit()
 
-film8 = Film(user_id = 1, title = "Salò, or the 120 Days of Sodom", year = 1975, description = "In World War II Italy, four fascist libertines round up nine adolescent boys and girls and subject them to one hundred and twenty days of physical, mental and sexual torture.", poster_image = "https://m.media-amazon.com/images/M/MV5BYTEzYTBiNWUtZDVkZS00OWYzLWEwYzAtOWJlNWM5MWU1M2Y4XkEyXkFqcGdeQXVyODc0OTEyNDU@._V1_SY1000_CR0,0,719,1000_AL_.jpg", genre = genre3)
+film8 = Film(user_id = 1, title = "Salo, or the 120 Days of Sodom", year = 1975, description = "In World War II Italy, four fascist libertines round up nine adolescent boys and girls and subject them to one hundred and twenty days of physical, mental and sexual torture.", poster_image = "https://m.media-amazon.com/images/M/MV5BYTEzYTBiNWUtZDVkZS00OWYzLWEwYzAtOWJlNWM5MWU1M2Y4XkEyXkFqcGdeQXVyODc0OTEyNDU@._V1_SY1000_CR0,0,719,1000_AL_.jpg", genre = genre3)
 session.add(film8)
 session.commit()
 
@@ -140,7 +140,7 @@ film19 = Film(user_id = 1, title = "The Corporation", year = 2003, description =
 session.add(film19)
 session.commit()
 
-film20 = Film(user_id = 1, title = "Bixa Travesty", year = 2018, description = "A documentary that follows Mc Linn Da Quebrada, a black trans woman, performer and activist living in impoverished São Paulo. Her electrifying performances (with plenty of nudity) brazenly take on Brazil's hetero-normative machismo.", poster_image = "https://m.media-amazon.com/images/M/MV5BMDI5ODkzYTQtMzY3MS00ZjQ4LWJkMTQtYjVlMDRkNmJiOGQ2XkEyXkFqcGdeQXVyODIyOTEyMzY@._V1_.jpg", genre = genre9)
+film20 = Film(user_id = 1, title = "Bixa Travesty", year = 2018, description = "A documentary that follows Mc Linn Da Quebrada, a black trans woman, performer and activist living in impoverished Sao Paulo. Her electrifying performances (with plenty of nudity) brazenly take on Brazil's hetero-normative machismo.", poster_image = "https://m.media-amazon.com/images/M/MV5BMDI5ODkzYTQtMzY3MS00ZjQ4LWJkMTQtYjVlMDRkNmJiOGQ2XkEyXkFqcGdeQXVyODIyOTEyMzY@._V1_.jpg", genre = genre9)
 session.add(film20)
 session.commit()
 
