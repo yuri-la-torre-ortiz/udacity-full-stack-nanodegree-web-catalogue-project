@@ -81,7 +81,7 @@ film5 = Film(user_id = 1, title = "I Origins", year = 2014, description = "A mol
 session.add(film5)
 session.commit()
 
-film6 = Film(user_id = 1, title = "V for Vendetta", year = 2005, description = "In a future British tyranny, a shadowy freedom fighter, known only by the alias of "V", plots to overthrow it with the help of a young woman. ", poster_image = "https://m.media-amazon.com/images/M/MV5BYzllMjJkODAtYjMwMi00YmNhLWFhYzAtZjZjODg5YzEwOGUwXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SY999_CR0,0,679,999_AL_.jpg", genre = genre2)
+film6 = Film(user_id = 1, title = "V for Vendetta", year = 2005, description = 'In a future British tyranny, a shadowy freedom fighter, known only by the alias of "V", plots to overthrow it with the help of a young woman. ', poster_image = "https://m.media-amazon.com/images/M/MV5BYzllMjJkODAtYjMwMi00YmNhLWFhYzAtZjZjODg5YzEwOGUwXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SY999_CR0,0,679,999_AL_.jpg", genre = genre2)
 session.add(film6)
 session.commit()
 
