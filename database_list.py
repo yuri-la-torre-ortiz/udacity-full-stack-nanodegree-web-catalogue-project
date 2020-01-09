@@ -28,39 +28,39 @@ User1 = User(name = "Atefeh Mohammadi", email = "atefeh.mohammadi@liberation.fr"
 session.add(User1)
 session.commit()
 
-genre1 = Genre(name = "Comedy")
+genre1 = Genre(user_id = 1, name = "Comedy")
 session.add(genre1)
 session.commit()
 
-genre2 = Genre(name = "Sci-Fi")
+genre2 = Genre(user_id = 1, name = "Sci-Fi")
 session.add(genre2)
 session.commit()
 
-genre3 = Genre(name = "Horror")
+genre3 = Genre(user_id = 1, name = "Horror")
 session.add(genre3)
 session.commit()
 
-genre4 = Genre(name = "Fantasy")
+genre4 = Genre(user_id = 1, name = "Fantasy")
 session.add(genre4)
 session.commit()
 
-genre5 = Genre(name = "Romance")
+genre5 = Genre(user_id = 1, name = "Romance")
 session.add(genre5)
 session.commit()
 
-genre6 = Genre(name = "Thriller")
+genre6 = Genre(user_id = 1, name = "Thriller")
 session.add(genre6)
 session.commit()
 
-genre7 = Genre(name = "Drama")
+genre7 = Genre(user_id = 1, name = "Drama")
 session.add(genre7)
 session.commit()
 
-genre8 = Genre(name = "Mystery")
+genre8 = Genre(user_id = 1, name = "Mystery")
 session.add(genre8)
 session.commit()
 
-genre9 = Genre(name = "Documentary")
+genre9 = Genre(user_id = 1, name = "Documentary")
 session.add(genre9)
 session.commit()
 
