@@ -1,13 +1,14 @@
-from flask import Flask, render_template, request, redirect, jsonify, url_for, flash
+#! /usr/bin/python2.7
+from flask import Flask, render_template, request, redirect, jsonify, url_for
+from flask import flash
 from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, User, Genre, Film
-
-# New imports for step 3
 from flask import session as login_session
-import random, string
+import random
+import string
 
-# IMPORTS FOR STEP 5: GConnect
+# IMPORTS FOR GConnect
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
 import httplib2
@@ -39,7 +40,7 @@ def showLogin():
     # RENDER THE LOGIN TEMPLATE
     return render_template('login.html', STATE=state)
 
-# Step 5: GConnect page
+# GConnect page
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
     if request.args.get('state') != login_session['state']:
@@ -94,7 +95,7 @@ def gconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
 
-    # Store the access token in the session for later use.
+    # Store the credentials in the session for later use.
     login_session['access_token'] = credentials.access_token
     login_session['gplus_id'] = gplus_id
 
@@ -147,7 +148,7 @@ def getUserInfo(user_id):
     user = session.query(User).filter_by(id = user_id).one()
     return user
 
-# Step 6: DISCONNECT - Revoke a current user's token and reset their login_session.
+# DISCONNECT - Revoke a current user's token and reset their login_session.
 @app.route('/gdisconnect')
 def gdisconnect():
     #Only disconnect a connected user.
@@ -178,34 +179,44 @@ def gdisconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
 
-#JSON APIs to view Genre Information
-@app.route('/genre/<int:genre_id>/film/JSON')
+#JSON APIs to view Information of all genres & films
+@app.route('/JSON')
+def catalogueJSON():
+    genres = session.query(Genre).all()
+    films = session.query(Film).all()
+    return jsonify(genres= [g.serialize for g in genres], films =[f.serialize for f in films])
+
+#JSON APIs to view Genre Information of all Genres
+@app.route('/genre/JSON')
+def genresJSON():
+    genres = session.query(Genre).all()
+    return jsonify(genres= [g.serialize for g in genres])
+
+#JSON APIs to view Genre Information of a specific one and its respective films
+@app.route('/genre/<int:genre_id>/JSON')
 def filmGenreJSON(genre_id):
     genre = session.query(Genre).filter_by(id = genre_id).one()
     films = session.query(Film).filter_by(genre_id = genre_id).all()
-    return jsonify(Films=[f.serialize for f in films])
+    return jsonify(genre = genre.serialize, films=[f.serialize for f in films])
 
-
+#JSON APIs to view Film Information
 @app.route('/genre/<int:genre_id>/film/<int:film_id>/JSON')
 def FilmJSON(genre_id, film_id):
     Film_ID = session.query(Film).filter_by(id = film_id).one()
     return jsonify(Film_ID = Film_ID.serialize)
-
-@app.route('/genre/JSON')
-def genresJSON():
-    genres = session.query(Genre).all()
-    return jsonify(restaurants= [g.serialize for g in genres])
-
 
 #Show all film genres
 @app.route('/')
 @app.route('/genre/')
 def showGenres():
     genres = session.query(Genre).order_by(asc(Genre.name))
+    state = ''.join(random.choice(string.ascii_uppercase + string.digits)
+                    for x in xrange(32))
+    login_session['state'] = state
     if 'username' not in login_session:
-        return render_template('publicgenremenu.html', genres = genres)
+        return render_template('publicgenremenu.html', genres = genres, STATE = state)
     else:
-        return render_template('genremenu.html', genres = genres)
+        return render_template('genremenu.html', genres = genres, STATE = state)
 
 #Create a new film genre
 @app.route('/genre/new/', methods=['GET','POST'])
@@ -258,13 +269,16 @@ def deleteGenre(genre_id):
 @app.route('/genre/<int:genre_id>/')
 @app.route('/genre/<int:genre_id>/film/')
 def showFilms(genre_id):
+    state = ''.join(random.choice(string.ascii_uppercase + string.digits)
+                    for x in xrange(32))
+    login_session['state'] = state
     genre = session.query(Genre).filter_by(id = genre_id).one()
     creator = getUserInfo(genre.user_id)
     films = session.query(Film).filter_by(genre_id = genre_id).all()
     if 'username' not in login_session or creator.id != login_session['user_id']:
-        return render_template('publicgenremenu.html', films = films, genre = genre, creator = creator)
+        return render_template('publicfilmmenu.html', films = films, genre = genre, creator = creator, STATE = state)
     else:
-        return render_template('genremenu.html', films = films, genre = genre, creator = creator)
+        return render_template('filmmenu.html', films = films, genre = genre, creator = creator, STATE = state)
 
 
 
@@ -277,11 +291,11 @@ def newFilm(genre_id):
   if genre.user_id != login_session['user_id']:
       return "<script>function myFunction() {alert('You are not authorized to add films to this genre. Please create your own genre in order to add films.');}</script><body onload = 'myFunction()''>"
   if request.method == 'POST':
-      newFilm = Film(title = request.form['title'], year = request.form['year'], description = request.form['description'], poster_image = request.form['poster_image'], genre_id = genre_id, user_id = genre.user_id)
-      session.add(newItem)
+      newFilm = Film(title = request.form['title'], year = request.form['year'], description = request.form['description'], poster_image = request.form['poster_image'], genre_id = genre_id, user_id = login_session['user_id'])
+      session.add(newFilm)
+      flash('New Film %s Successfully Created' % (newFilm.title))
       session.commit()
-      flash('New Film %s Successfully Created' % (newFilm.name))
-      return redirect(url_for('showGenres', genre_id = genre_id))
+      return redirect(url_for('showFilms', genre_id = genre_id))
   else:
       return render_template('newfilm.html', genre_id = genre_id)
 
@@ -296,17 +310,17 @@ def editFilm(genre_id, film_id):
       return "<script>function myFunction() {alert('You are not authorized to edit films of this genre. Please create your own genre in order to edit films.');}</script><body onload = 'myFunction()''>"
     if request.method == 'POST':
         if request.form['title']:
-            editedFilm.title = request.form['title']
+            filmToEdit.title = request.form['title']
         if request.form['description']:
-            editedFilm.description = request.form['description']
+            filmToEdit.description = request.form['description']
         if request.form['year']:
-            editedFilm.year = request.form['year']
+            filmToEdit.year = request.form['year']
         if request.form['poster_image']:
-            editedFilm.poster_image = request.form['poster_image']
-        session.add(editedFilm)
-        session.commit()
+            filmToEdit.poster_image = request.form['poster_image']
+        session.add(filmToEdit)
         flash('Film Successfully Edited')
-        return redirect(url_for('showGenres', genre_id = genre_id))
+        session.commit()
+        return redirect(url_for('showFilms', genre_id = genre_id))
     else:
         return render_template('editfilm.html', genre_id = genre_id, film_id = film_id, film = filmToEdit)
 
