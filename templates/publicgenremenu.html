@@ -1,0 +1,30 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+
+			<h1>Film Genres</h1>
+
+	<div class = 'flash'>
+		      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+
+        <ul>
+        {% for message in messages %}
+            <li> <strong> {{ message }} </strong> </li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+    {% endwith %}
+
+</div>
+
+	{% for genre in genres %}
+		<a href = "{{url_for('showFilms', genre_id = genre.id)}}">
+			<div class="row">
+					<div class="col-md-10 film-genre-list">
+						<h3>{{genre.name}}</h3>
+					</div>
+			</div>
+		</a>
+	{% endfor %}
+{% endblock %}

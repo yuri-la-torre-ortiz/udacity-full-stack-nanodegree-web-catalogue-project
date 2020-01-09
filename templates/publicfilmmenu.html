@@ -1,0 +1,31 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+	<div class="row banner menu">
+		<div class="left">
+			<h1>{{ genre.name }} Films</h1>
+		</div>
+			<div class="col-md-12">
+			{% with messages = get_flashed_messages() %}
+				{% if messages %}
+					<ul>
+						{% for message in messages %}
+							 <li> <strong> {{ message }} </strong> </li>
+						{% endfor %}
+					</ul>
+				{% endif %}
+			{% endwith %}
+		</div>
+	</div>
+	  {% if films !=[] %}
+				<div class = "grid">
+					{% for f in films %}
+						<div class="film">
+							<h3>{{f.title}}</h3> <h4> ({{f.year}}) </h4>
+							<img src="{{f.poster_image}}" width = "200">
+							<p>{{f.description}}</p>
+						</div>
+					{% endfor %}
+				</div>
+					{% endif %}
+ {% endblock %}

@@ -1,0 +1,46 @@
+{% extends "main.html" %}
+{% block content %}
+{% include "header.html" %}
+	<div class="row top-menu" align = "left">
+		<a href="/gdisconnect" onclick="signOut();">
+			<button class="btn btn-default logout">
+			<span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Sign out</button></a>
+		<script>
+		  function signOut() {
+		    var auth2 = gapi.auth2.getAuthInstance();
+		    auth2.signOut().then(function () {
+		      console.log('User signed out.');
+		    });
+		  }
+		</script>
+		</div>
+	<div align = "center">
+			<h1>Film Genres</h1>
+<div class = 'flash'>
+		      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+
+        <ul>
+        {% for message in messages %}
+            <li> <strong> {{ message }} </strong> </li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+    {% endwith %}
+
+</div>
+			<div class="col-md-10 padding-none"
+			<a href="{{url_for('newGenre')}}">
+				<button class="btn btn-default" id="new-genre">
+					<span class="glyphicon glyphicon-film" aria-hidden="true"></span> Add Genre
+				</button>
+			</a>
+		</div>
+	</div>
+	{% for genre in genres %}
+		<a class="col-md-10 film-genre-list" href = "{{url_for('showFilms', genre_id = genre.id)}}">
+			<h3>{{genre.name}}</h3>
+		</a>
+
+	{% endfor %}
+{% endblock %}
