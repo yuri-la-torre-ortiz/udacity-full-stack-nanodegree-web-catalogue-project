@@ -20,6 +20,9 @@ A Linux-based virtual machine [\[VM\]](https://www.techopedia.com/definition/480
 - [Vagrant](https://www.vagrantup.com/)
 - [VirtualBox](https://www.virtualbox.org/wiki/Download_Old_Builds_5_1)
 - Python version 2.7
+- Werkzeug version 0.8.3
+- Flask version 0.9
+- Flask-Login version 0.1.3
 
 ### Virtual Machine Installation
 
